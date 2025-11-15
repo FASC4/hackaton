@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prueba Chat Neurodivergencia</title>
+  <!-- Carga de Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Chat para identificación de neurodivergencia -->
+  <section id="neurodivergencia-chat" class="container my-5">
+    <h2>Chat para Identificación de Neurodivergencia</h2>
+    <div id="chat-box" class="border rounded p-3 mb-3" style="height: 400px; overflow-y: auto;">
+      <!-- Los mensajes aparecerán aquí -->
+    </div>
+    <div class="input-group">
+      <input id="user-input" type="text" class="form-control" placeholder="Escribe tu respuesta...">
+      <button id="send-btn" class="btn btn-primary">Enviar</button>
+    </div>
+  </section>
+
+  <script>
+    // Lista de preguntas consecutivas
+    const preguntas = [
+      '¿Cómo te llamas?',
+      '¿Tienes dificultad para concentrarte durante tareas largas?',
+      '¿Sientes que te sobreestimulan ciertos ruidos o luces?',
+      '¿Prefieres rutinas y te cuesta enfrentar cambios inesperados?'
+    ];
+    let indicePregunta = 0;
+
+    // Referencias a los elementos del chat
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    // Función para añadir mensajes al contenedor
+    function agregarMensaje(texto, clase) {
+      const mensajeDiv = document.createElement('div');
+      mensajeDiv.classList.add('message', clase);
+      mensajeDiv.textContent = texto;
+      chatBox.appendChild(mensajeDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Función para hacer la siguiente pregunta
+    function hacerPregunta() {
+      if (indicePregunta < preguntas.length) {
+        agregarMensaje(preguntas[indicePregunta], 'bot');
+      } else {
+        agregarMensaje('Gracias por tus respuestas. Procesaremos la información.', 'bot');
+      }
+    }
+
+    // Mostrar la primera pregunta al cargar la página
+    hacerPregunta();
+
+    // Manejador para el botón de envío
+    sendBtn.addEventListener('click', () => {
+      const texto = userInput.value.trim();
+      if (!texto) return;
+      agregarMensaje(texto, 'user');
+      userInput.value = '';
+      indicePregunta++;
+      setTimeout(hacerPregunta, 500);
+    });
+
+    // Permitir enviar con la tecla Enter
+    userInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendBtn.click();
+      }
+    });
+  </script>
+
+  <!-- Carga de Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
